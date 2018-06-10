@@ -12,15 +12,16 @@ import org.slf4j.LoggerFactory;
  * Time: 17:19
  * Mail: withstars@126.com
  */
-public class ChatRoomMain  {
+public class Main {
 
-    private static final Logger logger = LoggerFactory.getLogger(ChatRoomMain.class);
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    private static void main(String[] args){
+    public static void main(String[] args){
         final Server server = new Server(Constants.DEFAULT_PORT);
         server.init();
         server.start();
 
+        // 注册进程钩子，在jvm进程关闭前释放资源
         Runtime.getRuntime().addShutdownHook(new Thread(){
             @Override
             public void run() {

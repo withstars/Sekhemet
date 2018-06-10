@@ -12,14 +12,21 @@ package cn.withstars.chatroom.protocol;
  */
 public class StatusCode {
 
-    public  static final int PING_CODE = 1; // ping
+    public  static final int PING_CODE = 10001; // ping
 
-    public  static final int PONG_CODE = 2; // pong
+    public  static final int PONG_CODE = 10002; // pong
 
-    public  static final int USER_COUNT = 3; // 用户数
+    public  static final int AUTH_CODE = 10006; // ping
 
-    public  static final int SYS_INFO = 4; // 系统消息
+    public  static final int MESS_CODE = 10007; // pong
 
-    public static final int MESSAGE_CODE = 5; // 消息
+    /**
+     * 系统消息类型
+     */
+    public  static final int SYS_USER_COUNT = 20001; // 实时用户数
+
+    public  static final int SYS_AUTH_STATE = 20002; // 系统消息
+
+    public static final int SYS_OTHER_INFO = 20003; // 消息
 
 }

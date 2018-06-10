@@ -25,12 +25,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Time: 17:16
  * Mail: withstars@126.com
  */
-public class CoreServer {
+public abstract class BaseServer implements Server {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     protected String hostName ="localhost";
 
-    protected int portNum = 8888;
+    protected int port = 8888;
 
     protected DefaultEventLoopGroup defaultEventLoopGroup;
 
@@ -38,11 +38,11 @@ public class CoreServer {
 
     protected NioEventLoopGroup workGroup;
 
-    protected NioServerSocketChannel nssc;
+    protected NioServerSocketChannel ssch;
 
     protected ChannelFuture cf;
 
-    protected ServerBootstrap serverBootstrap;
+    protected ServerBootstrap b;
 
     /**
      *  对服务器初始化
@@ -72,7 +72,7 @@ public class CoreServer {
                 return new Thread(r,"WORK_"+index.incrementAndGet());
             }
         });
-
+        b = new ServerBootstrap();
     }
 
     /**
@@ -86,10 +86,5 @@ public class CoreServer {
         bossGroup.shutdownGracefully();
         workGroup.shutdownGracefully();
     }
-
-
-
-
-
 
 }

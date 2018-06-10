@@ -15,23 +15,25 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 /**
- *
  * 用户实体类
  */
 public class User {
 
-    private long time = 0;
+    private boolean isAuth = false; //是否认证
 
-    private String username;
+    private long time = 0; //登录时长
 
-    private int userId;
+    private String username; // 昵称
 
-    private Channel channel;
+    private int userId; // UID
 
-    private String Addr;
+    private Channel channel; // 通道
 
-    // uid 原子类
-    private static AtomicInteger uid = new AtomicInteger(100000);
+    private String Addr; // 地址
+
+    private static AtomicInteger uid = new AtomicInteger(10000); // uid 原子类
+
+
 
     public void setChannel(Channel channel) {
         this.channel = channel;
@@ -72,5 +74,13 @@ public class User {
 
     public void setAddr(String addr) {
         Addr = addr;
+    }
+
+    public void setAuth(boolean auth) {
+        isAuth = auth;
+    }
+
+    public boolean isAuth() {
+        return isAuth;
     }
 }
