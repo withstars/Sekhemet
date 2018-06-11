@@ -59,8 +59,7 @@ public class Server extends BaseServer {
         try {
             cf = b.bind().sync();
             InetSocketAddress addr = (InetSocketAddress) cf.channel().localAddress();
-            logger.info("WebSocket start successfully, port is {}", port);
-
+            logger.info("WebSocket start successfully, port is {}", addr.getPort());
             // 定时扫描所有的channel，关闭失效的Channel
             executorService.scheduleAtFixedRate(new Runnable() {
                 @Override

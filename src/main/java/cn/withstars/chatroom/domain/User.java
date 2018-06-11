@@ -23,7 +23,7 @@ public class User {
 
     private long time = 0; //登录时长
 
-    private String username; // 昵称
+    private String nick; // 昵称
 
     private int userId; // UID
 
@@ -47,10 +47,14 @@ public class User {
         this.userId = uid.incrementAndGet();
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+
+    public String getNick() {
+        return nick;
     }
 
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
 
     public Channel getChannel() {
         return channel;
@@ -64,9 +68,7 @@ public class User {
         return time;
     }
 
-    public String getUsername() {
-        return username;
-    }
+
 
     public String getAddr() {
         return Addr;

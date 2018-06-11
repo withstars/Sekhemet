@@ -10,22 +10,22 @@ package cn.withstars.chatroom.protocol;
  * Time: 17:39
  * Mail: withstars@126.com
  */
-public class StatusCode {
+public class ChatCode {
 
-    public  static final int PING_CODE = 10001; // ping
+    public  static final int PING_CODE = 10015; // ping
 
-    public  static final int PONG_CODE = 10002; // pong
+    public  static final int PONG_CODE = 10016; // pong
 
-    public  static final int AUTH_CODE = 10006; // ping
+    public  static final int AUTH_CODE = 10000; // ping
 
-    public  static final int MESS_CODE = 10007; // pong
+    public  static final int MESS_CODE = 10086; // pong
 
     /**
      * 系统消息类型
      */
     public  static final int SYS_USER_COUNT = 20001; // 实时用户数
 
-    public  static final int SYS_AUTH_STATE = 20002; // 系统消息
+    public  static final int SYS_AUTH_STATE = 20002; // 认证消息
 
     public static final int SYS_OTHER_INFO = 20003; // 消息
 

@@ -1,8 +1,7 @@
 package cn.withstars.chatroom.handler;
 
 import cn.withstars.chatroom.domain.User;
-import cn.withstars.chatroom.protocol.ChatProto;
-import cn.withstars.chatroom.protocol.StatusCode;
+import cn.withstars.chatroom.protocol.ChatCode;
 import cn.withstars.chatroom.util.Constants;
 import cn.withstars.chatroom.util.NettyUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -13,7 +12,6 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +38,8 @@ public class UserAuthHandler extends SimpleChannelInboundHandler<Object> {
                 final String remoteAddress = NettyUtil.parseChannelRemoteAddr(ctx.channel());
                 logger.warn("NETTY SERVER PIPIELINE: IDLE exception [{}]", remoteAddress);
                 UserInfoManager.removeChannel(ctx.channel());
-                UserInfoManager.broadcastInfo(StatusCode.SYS_USER_COUNT, UserInfoManager.getUserCount());
+                UserInfoManager.broadcastInfo(ChatCode.SYS_USER_COUNT, UserInfoManager.getUserCount());
+                logger.warn("The current number of people online is "+UserInfoManager.getUserCount());
             }
         }
         ctx.fireUserEventTriggered(evt);
@@ -49,9 +48,9 @@ public class UserAuthHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof FullHttpRequest){
-
+            handleHttpRequest(ctx, (FullHttpRequest) msg);
         }else if (msg instanceof WebSocketFrame){
-
+            handleWebSocket(ctx, (WebSocketFrame) msg);
         }
     }
 
@@ -69,6 +68,8 @@ public class UserAuthHandler extends SimpleChannelInboundHandler<Object> {
         }else {
             // 动态加入websocket编码编解码处理
             handshaker.handshake(ctx.channel(), request);
+            User user = new User();
+            user.setAddr(NettyUtil.parseChannelRemoteAddr(ctx.channel()));
             // 存储已经连接的channel
             UserInfoManager.addChannel(ctx.channel());
         }
@@ -105,19 +106,19 @@ public class UserAuthHandler extends SimpleChannelInboundHandler<Object> {
         int code = json.getInteger("code");
         Channel channel = ctx.channel();
         switch (code){
-            case StatusCode.PING_CODE:
-            case StatusCode.PONG_CODE:
+            case ChatCode.PING_CODE:
+            case ChatCode.PONG_CODE:
                 UserInfoManager.updateUserTime(channel);
-                UserInfoManager.sendPong(ctx.channel());
+              //  UserInfoManager.sendPong(ctx.channel());
                 logger.info("Receive pong message, address : {}", NettyUtil.parseChannelRemoteAddr(channel));
                 return;
-            case StatusCode.AUTH_CODE:
-                boolean isSuccess = UserInfoManager.saveUser(channel, json.getString("username"));
-                UserInfoManager.sendInfo(channel,StatusCode.SYS_AUTH_STATE, isSuccess);
+            case ChatCode.AUTH_CODE:
+                boolean isSuccess = UserInfoManager.saveUser(channel, json.getString("nick"));
+                UserInfoManager.sendInfo(channel, ChatCode.SYS_AUTH_STATE, isSuccess);
                 if (isSuccess){
-                    UserInfoManager.broadcastInfo(StatusCode.SYS_USER_COUNT, UserInfoManager.getUserCount());
+                    UserInfoManager.broadcastInfo(ChatCode.SYS_USER_COUNT, UserInfoManager.getUserCount());
                 }
-            case StatusCode.MESS_CODE: // 普通的消息留给MessageHanler处理
+            case ChatCode.MESS_CODE: // 普通的消息留给MessageHanler处理
                  break;
 
             default:

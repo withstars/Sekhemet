@@ -1,8 +1,7 @@
 package cn.withstars.chatroom.handler;
 
 import cn.withstars.chatroom.domain.User;
-import cn.withstars.chatroom.protocol.ChatProto;
-import cn.withstars.chatroom.protocol.StatusCode;
+import cn.withstars.chatroom.protocol.ChatCode;
 import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -29,7 +28,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<TextWebSocketFra
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
         UserInfoManager.removeChannel(ctx.channel());
-        UserInfoManager.broadcastInfo(StatusCode.SYS_USER_COUNT, UserInfoManager.getUserCount());
+        UserInfoManager.broadcastInfo(ChatCode.SYS_USER_COUNT, UserInfoManager.getUserCount());
         super.channelUnregistered(ctx);
     }
 
@@ -37,7 +36,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<TextWebSocketFra
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         logger.error("Connection error and close the channel", cause);
         UserInfoManager.removeChannel(ctx.channel());
-        UserInfoManager.broadcastInfo(StatusCode.SYS_USER_COUNT, UserInfoManager.getUserCount());
+        UserInfoManager.broadcastInfo(ChatCode.SYS_USER_COUNT, UserInfoManager.getUserCount());
 
     }
 
@@ -47,7 +46,7 @@ public class MessageHandler extends SimpleChannelInboundHandler<TextWebSocketFra
         if (user != null && user.isAuth()){
             JSONObject json = JSONObject.parseObject(frame.text());
             // 广播返回用户发送的文本
-            UserInfoManager.broadcastMess(user.getUserId(), user.getUsername(), json.getString("mess"));
+            UserInfoManager.broadcastMess(user.getUserId(), user.getNick(), json.getString("mess"));
         }
     }
 }

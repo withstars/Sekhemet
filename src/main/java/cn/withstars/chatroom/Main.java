@@ -20,7 +20,6 @@ public class Main {
         final Server server = new Server(Constants.DEFAULT_PORT);
         server.init();
         server.start();
-
         // 注册进程钩子，在jvm进程关闭前释放资源
         Runtime.getRuntime().addShutdownHook(new Thread(){
             @Override

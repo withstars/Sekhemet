@@ -58,21 +58,21 @@ public class UserInfoManager {
     /**
      * 检查是否有已保存当前Channel,若有,检查当前通道是否激活，若已激活,设置该Channel对应的User信息
      * @param channel
-     * @param username
+     * @param nick
      * @return
      */
-    public static boolean saveUser(Channel channel, String username){
+    public static boolean saveUser(Channel channel, String nick){
         User user = users.get(channel);
         if (user == null){
             return false;
         }
         if (!channel.isActive()){
-            logger.error("Channel is not active,address:{},username:{}",user.getAddr(),username);
+            logger.error("Channel is not active,address:{},nick:{}",user.getAddr(),nick);
             return false;
         }
         // 增加一个认证用户
         userCount.incrementAndGet();
-        user.setUsername(username);
+        user.setNick(nick);
         user.setAuth(true);
         user.setUserId();
         user.setTime(System.currentTimeMillis());
@@ -104,10 +104,10 @@ public class UserInfoManager {
     /**
      * 广播普通消息
      * @param userId
-     * @param username
+     * @param nick
      * @param message
      */
-    public static void broadcastMess(int userId, String username, String message){
+    public static void broadcastMess(int userId, String nick, String message){
         if (!BlankUtil.isBlank(message)){
             try {
                 rwLock.readLock().lock();
@@ -117,7 +117,7 @@ public class UserInfoManager {
                     if (user == null|| !user.isAuth()){
                         continue;
                     }
-                    ch.writeAndFlush(new TextWebSocketFrame(ChatProto.buildMessProto(userId, username, message)));
+                    ch.writeAndFlush(new TextWebSocketFrame(ChatProto.buildMessProto(userId, nick, message)));
                 }
             }finally {
                 rwLock.readLock().unlock();
@@ -180,6 +180,7 @@ public class UserInfoManager {
      */
     public static void sendPong(Channel channel){
         channel.writeAndFlush(new TextWebSocketFrame(ChatProto.buildPongProto()));
+
     }
 
     /**

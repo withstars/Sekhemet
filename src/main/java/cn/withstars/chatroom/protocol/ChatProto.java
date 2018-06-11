@@ -2,6 +2,8 @@ package cn.withstars.chatroom.protocol;
 
 import cn.withstars.chatroom.util.DateTimeUtil;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,13 +25,14 @@ import java.util.Map;
  *  extend为协议扩展自断
  */
 public class ChatProto {
+    private static final Logger logger = LoggerFactory.getLogger(ChatProto.class);
 
-    public static final int PING_PROTO = 256; // ping消息
-    public static final int PONG_PROTO = 324; // pong消息
-    public static final int SYST_PROTO = 356; // 系统消息
-    public static final int EROR_PROTO = 452; // 错误消息
-    public static final int AUTH_PROTO = 624; // 认证消息
-    public static final int MESS_PROTO = 726; // 普通消息
+    public static final int PING_PROTO = 1 << 8 | 220; // ping消息
+    public static final int PONG_PROTO = 2 << 8 | 220; // pong消息
+    public static final int SYST_PROTO = 3 << 8 | 220; // 系统消息
+    public static final int EROR_PROTO = 4 << 8 | 220; // 错误消息
+    public static final int AUTH_PROTO = 5 << 8 | 220; // 认证消息
+    public static final int MESS_PROTO = 6 << 8 | 220; // 普通消息
 
     // 协议版本
     private int version = 1;
@@ -89,6 +92,7 @@ public class ChatProto {
         chatProto.extend.put("code", code);
         chatProto.extend.put("mess", mess);
         return JSONObject.toJSONString(chatProto);
+
     }
 
     /**
@@ -118,15 +122,47 @@ public class ChatProto {
     /**
      * 创建普通消息
      * @param userId
-     * @param username
+     * @param nick
      * @param mess
      * @return
      */
-    public static String buildMessProto(int userId, String username, String mess){
+    public static String buildMessProto(int userId, String nick, String mess){
         ChatProto chatProto = new ChatProto(MESS_PROTO, mess);
         chatProto.extend.put("userId",userId);
-        chatProto.extend.put("username", username);
+        chatProto.extend.put("nick", nick);
         chatProto.extend.put("time", DateTimeUtil.getCurrentTime());
         return JSONObject.toJSONString(chatProto);
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public int getUri() {
+        return uri;
+    }
+
+    public void setUri(int uri) {
+        this.uri = uri;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public Map<String, Object> getExtend() {
+        return extend;
+    }
+
+    public void setExtend(Map<String, Object> extend) {
+        this.extend = extend;
     }
 }
