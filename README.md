@@ -1,4 +1,4 @@
-### Netty 和 WebSocket 实现的即时聊天服务
+## Netty 和 WebSocket 实现的即时聊天服务
 #### 聊天协议
 | version | head | body | extend |
 | ------ | ------- | --------| ------|
@@ -9,3 +9,10 @@
 * 多人在线
 * 文本和表情消息发送
 * 定时心跳检测
+#### 服务器逻辑
+* 客户端/用户连接到服务器并加入聊天
+* HTTP 请求页面或 WebSocket 升级握手
+* 服务器处理所有客户端/用户
+* 响应 URI “/”的请求，转到默认 html 页面
+* 如果访问的是 URI“/websocket” ，处理 WebSocket 升级握手
+* 升级握手完成后 ，通过 WebSocket 发送聊天消息
