@@ -7,17 +7,13 @@
     <meta name="description" content="聊天室,Netty,WebSocket">
     <meta name="author" content="Andy">
     <link rel="icon" href="./favicon.ico">
-    <title>嗨皮聊天室 </title>
+    <title>畅聊聊天室 </title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://chat.wolfbe.com/bootstrap/css/reset.css">
     <link rel="stylesheet" href="http://chat.wolfbe.com/bootstrap/css/chat.css">
-    <!--<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
 </head>
 <body>
@@ -26,7 +22,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalLabel">欢迎来到嗨皮聊天室 | WOLFBE.COM</h4>
+                <h4 class="modal-title" id="modalLabel">欢迎来到畅聊聊天室 </h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="menuForm">
@@ -48,9 +44,6 @@
 <div class="modal fade" id="tipModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <!--<div class="modal-header">-->
-            <!--<h4 class="modal-title">提示信息</h4>-->
-            <!--</div>-->
             <div class="modal-body" id="tipMsg" style="align:center;"></div>
         </div>
     </div>
@@ -60,7 +53,7 @@
     <div class="row top" >
         <div class="col-sm-12" id="top">
             <div style="color:#fff;">
-                在线人数：<span id="userCount" style="color:#fff;">11220</span> 人
+                当前在线人数：<span id="userCount" style="color:#fff;">0</span> 人
             </div>
         </div>
     </div>
@@ -77,7 +70,7 @@
             <input type="text" id="mess" style="margin:0;width:100%;height:40px;outline:none;"/>
         </div>
         <div class="col-xs-2" style="padding:0;">
-            <button id="sendBtn" style="height:40px;width:100%;outline:none;line-height:40px;">send</button>
+            <button id="sendBtn" style="height:40px;width:100%;outline:none;line-height:40px;">发送</button>
         </div>
     </div>
 </div>

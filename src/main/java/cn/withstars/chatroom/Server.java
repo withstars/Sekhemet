@@ -48,9 +48,9 @@ public class Server extends BaseServer {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(defaultEventLoopGroup,
                                 new HttpServerCodec(), //请求解码器
-                                new HttpObjectAggregator(65536), // 将多个消息转换成成单一的消息对象
+                                new HttpObjectAggregator(65536), // 将HTTP消息的多个部分合成一条完整的HTTP消息
                                 new ChunkedWriteHandler(),// 支持异步发送大的码流，一般用于发送文件流
-                                new IdleStateHandler(60,0,0),// 检测链路是否空闲
+                                new IdleStateHandler(60,0,0), // 设置60秒没有读到数据，则触发一个READER_IDLE事件。
                                 new UserAuthHandler(), // 处理握手和认证
                                 new MessageHandler() // 处理消息的发送
                                 );
